@@ -144,6 +144,10 @@
             histogram.update(brushedData && brushedData.length > 0 ? brushedData : data, "variety");
         }
 
+        function updatePC() {
+            pc.update(brushedData && brushedData.length > 0 ? brushedData : data, "variety");
+        }
+
         function updateDataTable() {
             dataTable.update(brushedData && brushedData.length > 0 ? brushedData : data, data.columns);
         }
@@ -180,6 +184,11 @@
                 histogram.initialize();
 
                 updateHistogram();
+
+                pc = new PC("#pc", data, ["petal.length", "petal.width", "sepal.length", "sepal.width"]);
+                pc.initialize();
+
+                updatePC();
 
                 dataTable = new DataTable("#data-table");
 
