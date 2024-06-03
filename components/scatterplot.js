@@ -5,7 +5,7 @@ class Scatterplot {
 
     constructor(svg, tooltip, data, width = 250, height = 250) {
         this.svg = svg;
-        this.tooltip = tooltip
+        this.tooltip = tooltip;
         this.data = data;
         this.width = width;
         this.height = height;
@@ -15,7 +15,7 @@ class Scatterplot {
 
     initialize() {
         this.svg = d3.select(this.svg);
-        this.tooltip = d3.select(this.tooltip)
+        this.tooltip = d3.select(this.tooltip);
         this.container = this.svg.append("g");
         this.xAxis = this.svg.append("g");
         this.yAxis = this.svg.append("g");
