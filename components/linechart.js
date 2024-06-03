@@ -1,3 +1,7 @@
+// Based on below references
+// https://d3-graph-gallery.com/graph/line_basic.html
+// .. and resolved come challenges with ChatGPT.
+
 class Linechart {
     margin = {
         top: 10, right: 10, bottom: 40, left: 40
@@ -25,15 +29,13 @@ class Linechart {
         this.container.attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
     }
 
-    update(data, xVar) {
+    update(data) {
         const parseDate = d3.timeParse("%m/%d/%Y");
         const formatDate = d3.timeFormat("%m");
 
         const filteredData = data.map(row => ({
             date: parseDate(row.date),
         }));
-
-        console.log(filteredData)
 
         const months = d3.rollups(filteredData, v => v.length, d => formatDate(d.date))
                          .map(([key, value]) => ({ 
@@ -42,8 +44,6 @@ class Linechart {
                         }));
 
         months.sort((a, b) => d3.ascending(a.date, b.date))
-
-        console.log(months)
 
         this.xScale.domain(d3.extent(months, d => d.date)).range([0, this.width]);
         this.yScale.domain([0, d3.max(months, d => d.posts)]).range([this.height, 0]);
