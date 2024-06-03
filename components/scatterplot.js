@@ -3,8 +3,9 @@ class Scatterplot {
         top: 10, right: 100, bottom: 40, left: 40
     }
 
-    constructor(svg, data, width = 250, height = 250) {
+    constructor(svg, tooltip, data, width = 250, height = 250) {
         this.svg = svg;
+        this.tooltip = tooltip
         this.data = data;
         this.width = width;
         this.height = height;
@@ -14,6 +15,7 @@ class Scatterplot {
 
     initialize() {
         this.svg = d3.select(this.svg);
+        this.tooltip = d3.select(this.tooltip)
         this.container = this.svg.append("g");
         this.xAxis = this.svg.append("g");
         this.yAxis = this.svg.append("g");
@@ -45,9 +47,38 @@ class Scatterplot {
         this.yScale.domain(d3.extent(this.data, d => d[yVar])).range([this.height, 0]);
         this.zScale.domain([...new Set(this.data.map(d => d[colorVar]))])
 
+        this.container.call(this.brush);
+
         this.circles = this.container.selectAll("circle")
             .data(data)
-            .join("circle");
+            .join("circle")
+            .on("mouseover", (e, d) => {
+                this.tooltip.select(".tooltip-inner")
+                    .html(`${this.xVar}: ${d[this.xVar]}<br />${this.yVar}: ${d[this.yVar]}`);
+
+                Popper.createPopper(e.target, this.tooltip.node(), {
+                    placement: 'top',
+                    modifiers: [
+                        {
+                            name: 'arrow',
+                            options: {
+                                element: this.tooltip.select(".tooltip-arrow").node(),
+                            },
+                        },
+                        {
+                            name: 'offset',
+                            options: {
+                                offset: [0, 10],
+                            },
+                        },
+                    ],
+                });
+
+                this.tooltip.style("display", "block");
+            })
+            .on("mouseout", (d) => {
+                this.tooltip.style("display", "none");
+            });
 
         this.circles
             .transition()
@@ -55,9 +86,6 @@ class Scatterplot {
             .attr("cy", d => this.yScale(d[yVar]))
             .attr("fill", useColor ? d => this.zScale(d[colorVar]) : "black")
             .attr("r", 3)
-
-
-        this.container.call(this.brush);
 
         this.xAxis
             .attr("transform", `translate(${this.margin.left}, ${this.margin.top + this.height})`)
