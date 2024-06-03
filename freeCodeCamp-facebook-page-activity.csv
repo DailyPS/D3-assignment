@@ -1,4 +1,4 @@
-date,time,title,type,reach,clicks,reactions
+"date","time","title","type","reach","clicks","reactions"
 08/18/2017,3:45 pm,The origins of t-distributions and how they can help you make accurate estimates from small sample sizes.,Link,1768,44,21
 08/18/2017,11:27 am,How one camper got his developer dream job,Link,6941,536,99
 08/17/2017,7:18 pm,Trying to code when chat's open,Video,17399,2236,750
@@ -385,7 +385,6 @@ date,time,title,type,reach,clicks,reactions
 11/28/2016,7:53 am,If you plan to check out Amazon's Cyber Monday deals use this link to support our community while you shop: http://amzn.to/2fWESrn,Status,5371,337,41
 11/25/2016,1:24 pm,Proposed patch for Sim City,Photo,12331,1856,520
 11/24/2016,10:37 am,Fun Siri + Wolfram Alpha trick if you have an iPhone (via https://www.reddit.com/r/softwaregore/comments/5eht5c/after_figuring_out_why_the_siriwolframalpha_bug/),Photo,5326,928,53
-11/23/2016,10:51 am,15 sorting algorithms visualized in 5 minutes with awesome arcade sounds,Video,408191,89329,15226
 11/23/2016,10:01 am,Heisenbug kitten,Video,10942,1236,184
 11/21/2016,2:28 pm,Freecodecamp shared your post.,Photo,3840,157,43
 11/18/2016,11:26 am,Rubber Duck Debugging,Photo,12489,1726,503

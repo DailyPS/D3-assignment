@@ -13,6 +13,7 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     
     <script src="components/scatterplot.js"></script>
+    <script src="components/linechart.js"></script>
     <script src="components/histogram.js"></script>
     <script src="components/datatable.js"></script>
 
@@ -25,7 +26,6 @@
         }
 
         .container {
-            width: 800px;
             background: white;
         }
 
@@ -42,32 +42,28 @@
     <header>
         <nav class="container navbar navbar-light bg-light">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">My Scatterplot</span>
+                <span class="navbar-brand mb-0 h1">2023713189 - Kyeonghwan Min</span>
             </div>
         </nav>
 
     </header>
 
-    <main class="container pb-3">
+    <main class="container">
         <div class="row pt-2">
             <div class="col-1 text-end pe-2"><strong>X:</strong></div>
             <div class="col-11">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="x-encoding" value="sepal.length" id="x-sl"
+                    <input class="form-check-input" type="radio" name="x-encoding" value="reach" id="x-sl"\>
+                    <label class="form-check-label" for="x-sl">Reach</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="x-encoding" value="clicks" id="x-sw"
                         checked>
-                    <label class="form-check-label" for="x-sl">SepalLength</label>
+                    <label class="form-check-label" for="x-sw">Clicks</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="x-encoding" value="sepal.width" id="x-sw">
-                    <label class="form-check-label" for="x-sw">SepalWidth</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="x-encoding" value="petal.length" id="x-pl">
-                    <label class="form-check-label" for="x-pl">PetalLength</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="x-encoding" value="petal.width" id="x-pw">
-                    <label class="form-check-label" for="x-pw">PetalWidth</label>
+                    <input class="form-check-input" type="radio" name="x-encoding" value="reactions" id="x-pl">
+                    <label class="form-check-label" for="x-pl">Reactions</label>
                 </div>
             </div>
         </div>
@@ -75,21 +71,17 @@
             <div class="col-1 text-end pe-2"><strong>Y:</strong></div>
             <div class="col-11">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="y-encoding" value="sepal.length" id="y-sl">
-                    <label class="form-check-label" for="y-sl">SepalLength</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="y-encoding" value="sepal.width" id="y-sw"
+                    <input class="form-check-input" type="radio" name="y-encoding" value="reach" id="y-sl"
                         checked>
-                    <label class="form-check-label" for="y-sw">SepalWidth</label>
+                    <label class="form-check-label" for="y-sl">Reach</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="y-encoding" value="petal.length" id="y-pl">
-                    <label class="form-check-label" for="y-pl">PetalLength</label>
+                    <input class="form-check-input" type="radio" name="y-encoding" value="clicks" id="y-sw">
+                    <label class="form-check-label" for="y-sw">Clicks</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="y-encoding" value="petal.width" id="y-pw">
-                    <label class="form-check-label" for="y-pw">PetalWidth</label>
+                    <input class="form-check-input" type="radio" name="y-encoding" value="reactions" id="y-pl">
+                    <label class="form-check-label" for="y-pl">Reactions</label>
                 </div>
             </div>
         </div>
@@ -102,7 +94,7 @@
             </div>
         </div>
         <div class="text-center">
-            <svg width="400" height="400" id="scatterplot">
+            <svg width="450" height="400" id="scatterplot">
             </svg>
             <div class="tooltip bs-tooltip-top show" id="sc-tooltip" role="tooltip" style="display:none">
                 <div class="tooltip-arrow"></div>
@@ -110,17 +102,17 @@
                     Some tooltip text!
                 </div>
             </div>
-            <svg width="400" height="400" id="histogram">
+            <svg width="450" height="400" id="histogram">
+            </svg>
+            <svg with="450" height="400" id="linechart">
             </svg>
         </div>
         <table class="table table-striped text-center">
             <thead>
                 <tr>
-                    <th>Petal Length</th>
-                    <th>Petal Width</th>
-                    <th>Sepal Length</th>
-                    <th>Sepal Width</th>
-                    <th>Variety</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Title</th>
                 </tr>
             </thead>
             <tbody id="data-table">
@@ -130,36 +122,39 @@
     </main>
 
     <script>
-        let data, brushedData, scatterplot, histogram, dataTable;
+        let data, brushedData, scatterplot, linechart, histogram, dataTable;
 
         function updateScatterplot() {
             let xVar = d3.select("input[type=radio][name=x-encoding]:checked").property("value");
             let yVar = d3.select("input[type=radio][name=y-encoding]:checked").property("value");
             let useColor = d3.select("#use-color").property("checked");
-            scatterplot.update(xVar, yVar, "variety", useColor);
+            scatterplot.update(xVar, yVar, "type", useColor);
             // TODO: update the scatterplot by calling scatterplot.update 
         }
 
+        function updateLinechart() {
+            linechart.update(data)
+        }
+
         function updateHistogram() {
-            histogram.update(brushedData && brushedData.length > 0 ? brushedData : data, "variety");
+            histogram.update(brushedData && brushedData.length > 0 ? brushedData : data, "type");
         }
 
         function updatePC() {
-            pc.update(brushedData && brushedData.length > 0 ? brushedData : data, "variety");
+            pc.update(brushedData && brushedData.length > 0 ? brushedData : data, "type");
         }
 
         function updateDataTable() {
             dataTable.update(brushedData && brushedData.length > 0 ? brushedData : data, data.columns);
         }
 
-        d3.csv("https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv")
+        d3.csv("./freeCodeCamp-facebook-page-activity.csv")
             .then(csvData => {
                 // Data conversion
                 csvData.forEach(d => {
-                    d["petal.length"] = +d["petal.length"];
-                    d["petal.width"] = +d["petal.width"];
-                    d["sepal.length"] = +d["sepal.length"];
-                    d["sepal.width"] = +d["sepal.width"];
+                    d["reach"] = +d["reach"];
+                    d["clicks"] = +d["clicks"];
+                    d["reactions"] = +d["reactions"];
                 });
 
                 data = csvData;
@@ -176,19 +171,19 @@
                 // TODO: bind an event handler to "brush" events     
                 scatterplot.on("brush", (brushedItems) => {
                     brushedData = brushedItems;
-                    updateHistogram();
+                    updateHistogram();  
                     updateDataTable();
                 });
+
+                linechart = new Linechart("#linechart");
+                linechart.initialize();
+
+                updateLinechart();
 
                 histogram = new Histogram("#histogram");
                 histogram.initialize();
 
                 updateHistogram();
-
-                pc = new PC("#pc", data, ["petal.length", "petal.width", "sepal.length", "sepal.width"]);
-                pc.initialize();
-
-                updatePC();
 
                 dataTable = new DataTable("#data-table");
 

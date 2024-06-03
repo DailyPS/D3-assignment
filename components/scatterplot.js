@@ -3,8 +3,8 @@ class Scatterplot {
         top: 10, right: 100, bottom: 40, left: 40
     }
 
-    constructor(svg, tooltip, data, width = 250, height = 250) {
-        this.svg = svg;
+    constructor(svg, tooltip, data, width = 350, height = 250) {
+        this.svg = svg; // #scatterplot
         this.tooltip = tooltip;
         this.data = data;
         this.width = width;
@@ -23,7 +23,7 @@ class Scatterplot {
 
         this.xScale = d3.scaleLinear();
         this.yScale = d3.scaleLinear();
-        this.zScale = d3.scaleOrdinal().range(d3.schemeCategory10)
+        this.zScale = d3.scaleOrdinal().range(d3.schemeCategory10);
 
         this.svg
             .attr("width", this.width + this.margin.left + this.margin.right)
@@ -85,7 +85,7 @@ class Scatterplot {
             .attr("cx", d => this.xScale(d[xVar]))
             .attr("cy", d => this.yScale(d[yVar]))
             .attr("fill", useColor ? d => this.zScale(d[colorVar]) : "black")
-            .attr("r", 3)
+            .attr("r", 3);
 
         this.xAxis
             .attr("transform", `translate(${this.margin.left}, ${this.margin.top + this.height})`)
