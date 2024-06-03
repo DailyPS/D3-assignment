@@ -10,6 +10,8 @@
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
     <script src="components/scatterplot.js"></script>
     <script src="components/histogram.js"></script>
     <script src="components/datatable.js"></script>
@@ -102,7 +104,12 @@
         <div class="text-center">
             <svg width="400" height="400" id="scatterplot">
             </svg>
-
+            <div class="tooltip bs-tooltip-top show" id="sc-tooltip" role="tooltip" style="display:none">
+                <div class="tooltip-arrow"></div>
+                <div class="tooltip-inner">
+                    Some tooltip text!
+                </div>
+            </div>
             <svg width="400" height="400" id="histogram">
             </svg>
         </div>
@@ -153,7 +160,7 @@
 
                 data = csvData;
 
-                scatterplot = new Scatterplot("#scatterplot", data);
+                scatterplot = new Scatterplot("#scatterplot", "#sc-tooltip", data);
                 scatterplot.initialize();
 
                 updateScatterplot();
